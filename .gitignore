@@ -2,3 +2,4 @@ venv/
 data/
 output/
 others/
+src/__pycache__/
