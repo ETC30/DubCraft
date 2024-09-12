@@ -11,7 +11,7 @@ This application allows you to translate and dub videos entered from your comput
 
 ## Changelog
 
-### v1.0.0
+- ### v1.0.0
 Inital release.
 
 ## License
