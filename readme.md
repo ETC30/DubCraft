@@ -7,7 +7,7 @@ This application allows you to translate and dub videos entered from your comput
 
 
 ## Authors
-- [@ETC30](https://www.github.com/ETC30): Mechanical engineer interested in mechanics ⚙, electronics 🔌 and programming 👨‍💻.
+- [@ETC30](https://www.github.com/ETC30): mechanical engineer interested in mechanics ⚙, electronics 🔌 and programming 👨‍💻.
 
 ## Changelog
 
