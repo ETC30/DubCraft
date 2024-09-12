@@ -1,0 +1,9 @@
+-Memoria de opciones
+-Añadir notificaciones
+-Añadir tiempos y status
+-Añadir un botón para cancelar la operación sustituyendo el de start
+-Menubar
+    - File: Abrir archivo local o srt
+    - Settings
+    - About
+-Mejorar la ui
