@@ -9,6 +9,7 @@ TRANSCRIPTION_MODELS = {
 
 
 DUBBING_MODELS = {
-    "Multilingual": "tts_models/multilingual/multi-dataset/xtts_v2"
+    "Multilingual": "tts_models/multilingual/multi-dataset/xtts_v2",
+    "Castellano": "tts_models/es/mai/tacotron2-DDC"
     }
 

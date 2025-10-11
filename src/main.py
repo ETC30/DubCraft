@@ -14,9 +14,18 @@ def emit_progress (progress):
 def start_process(isDownloaded):
     if isDownloaded:
 
-        if window.current_mode == 0:
+        if window.current_mode == 0 and window.checkbox_translate.isChecked():
             try:   
                 translate(window.segments)
+            except Exception as e:
+                window.switch_start_cancel()
+                window.open_file_button.setEnabled(True)
+                window.open_url_button.setEnabled(True)
+                window.new_list_item("QLabel", f"An unexpected error occurred: {e}")
+
+        if (window.current_mode == 0) and (not window.checkbox_translate.isChecked()):
+            try:
+                generate_final_files(window.segments)
             except Exception as e:
                 window.switch_start_cancel()
                 window.open_file_button.setEnabled(True)
@@ -61,7 +70,12 @@ def translate(segment_lists):
     
 def generate_final_files(segment_lists):
     global generator_thread
-    generator_thread = Generator(window.current_dubbing_model, segment_lists, window.current_inner_path, window.current_sample_path, window.current_to_lang, window.maintain_speed_of, window.generate_AV, window.current_video_path)
+
+    if window.current_sample_path is None:
+        generator_thread = Generator(window.current_dubbing_model, segment_lists, window.current_inner_path, None, window.current_to_lang, window.maintain_speed_of, window.generate_AV, window.current_video_path)
+    else: 
+        generator_thread = Generator(window.current_dubbing_model, segment_lists, window.current_inner_path, window.current_sample_path, window.current_to_lang, window.maintain_speed_of, window.generate_AV, window.current_video_path)
+    
     generator_thread.finished_signal.connect(remove_files)  
     try:
         generator_thread.start()

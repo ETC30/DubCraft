@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
     # Construye la ventana
     def __init__(self):
         super().__init__()
+        self.inicializarUI()
         self.current_version = "1.0.0"
         self.current_url=""
         self.current_output_path=""
@@ -47,11 +48,10 @@ class MainWindow(QMainWindow):
         self.generate_AV = True
         self.current_process_btn = True
         self.maintain_speed_of = 0
-        self.current_mode = 2
+        self.current_mode = 0
         self.init_time = 0
         with open('resources\styles\styles.css','r') as file:
             style = file.read()
-        self.inicializarUI()
         self.setStyleSheet(style)
         
     # Inicializa y carga todos los elementos iniciales de la ui
@@ -167,11 +167,13 @@ class MainWindow(QMainWindow):
         text = self.text_zone.toPlainText()
         self.srt_validator_thread = SRTvalidator(text)
         self.srt_validator_thread.is_valid.connect(self.validated_srt)
+        self.srt_validator_thread.error_signal.connect(lambda msg: self.new_list_item("QLabel", msg))
         self.srt_validator_thread.start()
+
     
-    # Da comienzo a la descarga
+    # Da comienzo al proceso
     def start_process(self):
-        if self.current_output_path and self.current_sample_path:
+        if self.current_output_path:
             self.init_time = time.time()
             self.new_list_item("QLabel", "The process has begun. The time depends on the performance of your computer. Be patient.")
             self.open_url_button.setEnabled(False)
@@ -301,6 +303,7 @@ class MainWindow(QMainWindow):
         if widget_type == "QLabel":
             label = QLabel(text)
             label.setWordWrap(True)
+            label.setTextInteractionFlags(Qt.TextSelectableByMouse)
             label.setStyleSheet("border: 1px solid black; padding: 2px; margin-bottom: 2px; margin-right: 1px")
             label.setOpenExternalLinks(False)
             label.linkActivated.connect(self.open_location)
@@ -507,7 +510,7 @@ class MainWindow(QMainWindow):
         self.radio_text.toggled.connect(self.on_radio_button_toggled)
         self.radio_local.toggled.connect(self.on_radio_button_toggled)
         self.radio_url.toggled.connect(self.on_radio_button_toggled)
-        self.radio_url.setChecked(True)
+        self.radio_text.setChecked(True)
         top_center_Vlayout.addWidget(self.radio_text)
         top_center_Vlayout.addWidget(self.radio_local)
         top_center_Vlayout.addWidget(self.radio_url)
@@ -629,6 +632,10 @@ class MainWindow(QMainWindow):
         #Añade un espaciador
         right_Vlayout.addItem(spacer)
 
+        #Añade checkbox para traducir o no
+        self.checkbox_translate = QCheckBox("Translate")
+        right_Vlayout.addWidget(self.checkbox_translate)
+
         #Añade un HLayout para los combobox de los idiomas
         right_Hlayout_1 = QHBoxLayout()
 
@@ -691,7 +698,7 @@ class MainWindow(QMainWindow):
         right_container = QWidget()
         right_container.setLayout(right_Vlayout)
 
-            #Generar layout principal que contendrá los otros dos layouts
+        #Generar layout principal que contendrá los otros dos layouts
         main_layout = QHBoxLayout()
         main_spacer = QSpacerItem(2,0)
         main_layout.addWidget(left_container)
